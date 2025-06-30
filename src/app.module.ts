@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { environments } from './enviroments';
 import appConfig from './config/index';
 import { appConfigSchema } from './config/config.scheman';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { appConfigSchema } from './config/config.scheman';
     UsersModule,
     ProductsModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
