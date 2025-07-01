@@ -43,6 +43,19 @@ export class UsersService {
     return user;
   }
 
+  async findByEmail(email: User['email']): Promise<User> {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+      relations: ['customer'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+
+    return user;
+  }
+
   async create(data: CreateUserDto): Promise<User> {
     const newUser = this.usersRepository.create(data);
 

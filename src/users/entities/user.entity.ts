@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 import { Customer } from './customer.entity';
 
@@ -19,6 +22,7 @@ export class User {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
@@ -43,4 +47,12 @@ export class User {
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (!this.password) return;
+
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }
