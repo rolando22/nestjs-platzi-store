@@ -8,8 +8,10 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 import { ProductsService } from 'src/products/services/products/products.service';
 import {
@@ -18,6 +20,7 @@ import {
   UpdateProductDto,
 } from 'src/products/dtos/product.dto';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
