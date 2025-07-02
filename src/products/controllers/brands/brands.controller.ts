@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
@@ -17,12 +18,16 @@ import {
   CreateBrandDto,
   UpdateBrandDto,
 } from 'src/products/dtos/brand.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
 
+@UseGuards(JwtAuthGuard)
 @Controller('brands')
 export class BrandsController {
   constructor(private brandsService: BrandsService) {}
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Get all brands' })
   async getAll(@Query() query: BrandQueryDto) {
     const brands = await this.brandsService.findAll(query);
@@ -33,6 +38,7 @@ export class BrandsController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Get a brand by ID' })
   async getOne(@Param('id', ParseIntPipe) id: number) {
     const brand = await this.brandsService.findOne(id);

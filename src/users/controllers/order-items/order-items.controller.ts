@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
@@ -17,7 +18,9 @@ import {
   OrderItemQueryDto,
   UpdateOrderItemDto,
 } from 'src/users/dtos/order-item.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('order-items')
 export class OrderItemsController {
   constructor(private orderItemsService: OrderItemsService) {}
