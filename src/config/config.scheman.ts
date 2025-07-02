@@ -5,6 +5,9 @@ export const appConfigSchema = Joi.object({
   NODE_ENV: Joi.string().valid('dev', 'stag', 'prod', 'test'),
   PORT: Joi.number().required(),
   API_KEY: Joi.string().required(),
+  // JWT
+  JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRATION: Joi.string().required(),
   // DATABASE POSTGRES
   POSTGRES_DB: Joi.string().required(),
   POSTGRES_USER: Joi.string().required(),
