@@ -19,9 +19,12 @@ import {
   UpdateCategoryDto,
 } from 'src/products/dtos/category.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/models/role.model';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('categories')
 export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
@@ -49,6 +52,7 @@ export class CategoriesController {
   }
 
   @Post()
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Create a new category' })
   async create(@Body() body: CreateCategoryDto) {
     const newCategory = await this.categoriesService.create(body);
@@ -60,6 +64,7 @@ export class CategoriesController {
   }
 
   @Put(':id')
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Update an existing category' })
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -74,6 +79,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Delete a category by ID' })
   async delete(@Param('id', ParseIntPipe) id: number) {
     const category = await this.categoriesService.delete(id);
